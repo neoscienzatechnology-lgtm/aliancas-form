@@ -1,6 +1,6 @@
 'use strict';
 
-/* FootScan — painel web da clínica (SPA vanilla JS, pt-BR, sem recursos externos) */
+/* Palmilha Inteligente — painel web da clínica (SPA vanilla JS, pt-BR, sem recursos externos) */
 
 const API_BASE = '/api';
 const TOKEN_KEY = 'footscan_token';
@@ -367,7 +367,10 @@ function renderLogin() {
 
   setView(el('div', { class: 'login-wrap' },
     el('div', { class: 'card login-card' },
-      el('div', { class: 'login-brand' }, 'FootScan'),
+      el('img', {
+        class: 'login-logo-img', src: 'brand/logo-full.png',
+        alt: 'Palmilha Inteligente — Você, livre das dores!',
+      }),
       el('p', { class: 'muted login-sub' }, 'Painel da clínica — avaliação e medição dos pés'),
       form,
       el('p', { class: 'login-footnote muted' },

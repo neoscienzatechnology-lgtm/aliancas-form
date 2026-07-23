@@ -1,15 +1,25 @@
-"""Geração do relatório PDF do exame (A4 retrato, pt-BR, reportlab)."""
+"""Geração do relatório PDF do exame (A4 retrato, pt-BR, reportlab).
+
+Identidade visual conforme o Manual de Marca Palmilha Inteligente:
+Azul Petróleo #0A5B7E, Turquesa #1EC7E6/#49D7EE, Vermelho Destaque #D73045,
+Cinza Institucional #7E8494; tipografia Montserrat (títulos) + Inter (texto).
+"""
 
 import io
 from datetime import date, datetime
+from pathlib import Path
 from xml.sax.saxutils import escape as _xml_escape
 
+from reportlab.graphics.shapes import Drawing, Rect, String
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import mm
 from reportlab.lib.utils import ImageReader
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.pdfmetrics import registerFontFamily
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     Image,
     KeepTogether,
@@ -20,7 +30,29 @@ from reportlab.platypus import (
     TableStyle,
 )
 
-REPORT_TITLE = "Relatório de Avaliação do Pé — FootScan"
+_FONT_DIR = Path(__file__).with_name("fonts")
+try:
+    pdfmetrics.registerFont(TTFont("Montserrat-Bold", str(_FONT_DIR / "Montserrat-700.ttf")))
+    pdfmetrics.registerFont(TTFont("Montserrat-SemiBold", str(_FONT_DIR / "Montserrat-600.ttf")))
+    pdfmetrics.registerFont(TTFont("Inter", str(_FONT_DIR / "Inter-400.ttf")))
+    pdfmetrics.registerFont(TTFont("Inter-SemiBold", str(_FONT_DIR / "Inter-600.ttf")))
+    registerFontFamily(
+        "Inter", normal="Inter", bold="Inter-SemiBold",
+        italic="Inter", boldItalic="Inter-SemiBold",
+    )
+    _F_TITLE = "Montserrat-Bold"
+    _F_HEAD = "Montserrat-SemiBold"
+    _F_BODY = "Inter"
+    _F_BOLD = "Inter-SemiBold"
+    _F_NOTE = "Inter"
+except Exception:  # fontes ausentes: mantém o relatório funcional
+    _F_TITLE = _F_HEAD = _F_BOLD = "Helvetica-Bold"
+    _F_BODY = "Helvetica"
+    _F_NOTE = "Helvetica-Oblique"
+
+BRAND_NAME = "Palmilha Inteligente"
+BRAND_SLOGAN = "Você, livre das dores!"
+REPORT_TITLE = f"Relatório de Avaliação do Pé — {BRAND_NAME}"
 FOOTER_DISCLAIMER = (
     "Documento de apoio à avaliação profissional; não constitui diagnóstico."
 )
@@ -43,11 +75,51 @@ FOOT_SIDE_LABELS = {"left": "Pé esquerdo", "right": "Pé direito"}
 FOOT_SIDE_SHORT = {"left": "Esquerdo", "right": "Direito"}
 SEX_LABELS = {"F": "Feminino", "M": "Masculino", "outro": "Outro"}
 
-_HEADER_BG = colors.HexColor("#e3f2fd")
-_GRID_COLOR = colors.HexColor("#b0bec5")
-_HEADING_COLOR = colors.HexColor("#1d4e89")
+_PETROL = colors.HexColor("#0a5b7e")       # Azul Petróleo
+_TURQUOISE = colors.HexColor("#1ec7e6")    # Turquesa Principal
+_TURQUOISE_2 = colors.HexColor("#49d7ee")  # Turquesa Secundário
+_RED = colors.HexColor("#d73045")          # Vermelho Destaque
+_GRAY = colors.HexColor("#7e8494")         # Cinza Institucional
+
+_HEADER_BG = colors.HexColor("#e6f6fb")
+_GRID_COLOR = colors.HexColor("#b9d9e6")
+_HEADING_COLOR = _PETROL
 
 _CONTENT_WIDTH = A4[0] - 30 * mm
+
+_LOGO_PATH = Path(__file__).with_name("assets") / "logo.png"
+
+
+def _brand_header():
+    """Cabeçalho da marca: logotipo oficial (assinatura completa do manual)."""
+    if _LOGO_PATH.exists():
+        try:
+            reader = ImageReader(str(_LOGO_PATH))
+            img_w, img_h = reader.getSize()
+            width = 58 * mm
+            height = width * img_h / float(img_w)
+            image = Image(str(_LOGO_PATH), width=width, height=height)
+            image.hAlign = "CENTER"
+            return image
+        except Exception:
+            pass
+    # fallback textual caso o asset não esteja disponível
+    d = Drawing(_CONTENT_WIDTH, 14 * mm)
+    d.add(String(_CONTENT_WIDTH / 2.0, 7 * mm, "PALMILHA",
+                 fontName=_F_TITLE, fontSize=17, fillColor=_PETROL, textAnchor="middle"))
+    d.add(String(_CONTENT_WIDTH / 2.0, 2.5 * mm, " ".join("INTELIGENTE"),
+                 fontName=_F_HEAD, fontSize=9, fillColor=_TURQUOISE, textAnchor="middle"))
+    return d
+
+
+def _tricolor_rule():
+    """Régua divisória tricolor do manual de marca (petróleo / vermelho / turquesa)."""
+    d = Drawing(_CONTENT_WIDTH, 1.4 * mm)
+    w = _CONTENT_WIDTH
+    d.add(Rect(0, 0, w * 0.62, 1.1 * mm, fillColor=_PETROL, strokeColor=None))
+    d.add(Rect(w * 0.62, 0, w * 0.12, 1.1 * mm, fillColor=_RED, strokeColor=None))
+    d.add(Rect(w * 0.74, 0, w * 0.26, 1.1 * mm, fillColor=_TURQUOISE, strokeColor=None))
+    return d
 
 
 def _to_float(value):
@@ -99,15 +171,15 @@ def _styles():
     return {
         "title": ParagraphStyle(
             "FSTitle",
-            fontName="Helvetica-Bold",
-            fontSize=15,
-            leading=19,
+            fontName=_F_TITLE,
+            fontSize=14,
+            leading=18,
             alignment=TA_CENTER,
             textColor=_HEADING_COLOR,
         ),
         "heading": ParagraphStyle(
             "FSHeading",
-            fontName="Helvetica-Bold",
+            fontName=_F_HEAD,
             fontSize=12,
             leading=15,
             spaceBefore=6 * mm,
@@ -116,16 +188,16 @@ def _styles():
         ),
         "body": ParagraphStyle(
             "FSBody",
-            fontName="Helvetica",
+            fontName=_F_BODY,
             fontSize=9,
             leading=12,
         ),
         "note": ParagraphStyle(
             "FSNote",
-            fontName="Helvetica-Oblique",
+            fontName=_F_NOTE,
             fontSize=8,
             leading=10,
-            textColor=colors.HexColor("#546e7a"),
+            textColor=_GRAY,
             spaceBefore=1 * mm,
         ),
     }
@@ -133,7 +205,7 @@ def _styles():
 
 def _table_style(with_header=True, numeric_from_col=None):
     commands = [
-        ("FONTNAME", (0, 0), (-1, -1), "Helvetica"),
+        ("FONTNAME", (0, 0), (-1, -1), _F_BODY),
         ("FONTSIZE", (0, 0), (-1, -1), 9),
         ("GRID", (0, 0), (-1, -1), 0.4, _GRID_COLOR),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
@@ -144,7 +216,8 @@ def _table_style(with_header=True, numeric_from_col=None):
     ]
     if with_header:
         commands += [
-            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+            ("FONTNAME", (0, 0), (-1, 0), _F_BOLD),
+            ("TEXTCOLOR", (0, 0), (-1, 0), _PETROL),
             ("BACKGROUND", (0, 0), (-1, 0), _HEADER_BG),
         ]
     if numeric_from_col is not None:
@@ -345,11 +418,15 @@ def _previous_section(previous, current_by_side, styles):
 def _draw_footer(canvas, doc):
     canvas.saveState()
     width = A4[0]
-    canvas.setFont("Helvetica", 7)
-    canvas.setFillColor(colors.HexColor("#607d8b"))
+    canvas.setFillColor(_PETROL)
+    canvas.rect(0, 0, width, 4.5 * mm, stroke=0, fill=1)
+    canvas.setFillColor(_TURQUOISE)
+    canvas.rect(0, 4.5 * mm, width, 0.8 * mm, stroke=0, fill=1)
+    canvas.setFont(_F_NOTE, 7)
+    canvas.setFillColor(_GRAY)
     canvas.drawCentredString(width / 2.0, 16.5 * mm, FOOTER_DISCLAIMER)
     canvas.drawCentredString(width / 2.0, 13 * mm, FOOTER_LGPD)
-    canvas.drawCentredString(width / 2.0, 9.5 * mm, f"Página {canvas.getPageNumber()}")
+    canvas.drawCentredString(width / 2.0, 9.5 * mm, f"{BRAND_NAME} — Página {canvas.getPageNumber()}")
     canvas.restoreState()
 
 
@@ -374,11 +451,15 @@ def build_exam_pdf(
         topMargin=15 * mm,
         bottomMargin=26 * mm,
         title=REPORT_TITLE,
-        author="FootScan",
+        author=BRAND_NAME,
     )
 
     story = [
-        Paragraph(REPORT_TITLE, styles["title"]),
+        _brand_header(),
+        Spacer(1, 2 * mm),
+        _tricolor_rule(),
+        Spacer(1, 4 * mm),
+        Paragraph("Relatório de Avaliação do Pé", styles["title"]),
         Spacer(1, 4 * mm),
         _info_block(exam, patient, professional, styles),
     ]

@@ -2,11 +2,14 @@ package com.footscan.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val ClinicBlue = Color(0xFF1565C0)
-val ClinicBlueDark = Color(0xFF0D47A1)
-val ClinicBlueLight = Color(0xFF5E92F3)
-val ClinicBackground = Color(0xFFF5F8FC)
+// Manual de Marca Palmilha Inteligente
+val BrandPetrol = Color(0xFF0A5B7E)       // Azul Petróleo — elementos principais
+val BrandPetrolDark = Color(0xFF07445E)
+val BrandTurquoise = Color(0xFF1EC7E6)    // Turquesa Principal — destaques
+val BrandTurquoise2 = Color(0xFF49D7EE)   // Turquesa Secundário — áreas de apoio
+val BrandRed = Color(0xFFD73045)          // Vermelho Destaque — alertas
+val BrandGray = Color(0xFF7E8494)         // Cinza Institucional
+val ClinicBackground = Color(0xFFF3F9FC)
 val ClinicSurface = Color(0xFFFFFFFF)
-val ClinicError = Color(0xFFB3261E)
 val ClinicOnPrimary = Color(0xFFFFFFFF)
-val ClinicOnBackground = Color(0xFF1A1C1E)
+val ClinicOnBackground = Color(0xFF16323F)

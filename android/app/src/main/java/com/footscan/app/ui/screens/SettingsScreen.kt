@@ -75,7 +75,7 @@ fun SettingsScreen(container: AppContainer, navController: NavHostController) {
                     serverUrl = it
                     saved = false
                 },
-                label = { Text("URL do servidor FootScan") },
+                label = { Text("URL do servidor Palmilha Inteligente") },
                 placeholder = { Text(SettingsStore.DEFAULT_SERVER_URL) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),

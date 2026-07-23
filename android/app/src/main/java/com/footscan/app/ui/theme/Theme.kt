@@ -5,16 +5,17 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 private val LightColors = lightColorScheme(
-    primary = ClinicBlue,
+    primary = BrandPetrol,
     onPrimary = ClinicOnPrimary,
-    primaryContainer = ClinicBlueLight,
-    secondary = ClinicBlueDark,
-    onSecondary = ClinicOnPrimary,
+    primaryContainer = BrandTurquoise2,
+    secondary = BrandTurquoise,
+    onSecondary = BrandPetrolDark,
+    tertiary = BrandGray,
     background = ClinicBackground,
     onBackground = ClinicOnBackground,
     surface = ClinicSurface,
     onSurface = ClinicOnBackground,
-    error = ClinicError,
+    error = BrandRed,
 )
 
 @Composable

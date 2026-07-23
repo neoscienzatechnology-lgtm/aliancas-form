@@ -1,12 +1,18 @@
-# FootScan — Escaneamento de pé pelo celular (MVP 2D calibrado)
+# Palmilha Inteligente — Escaneamento de pé pelo celular (MVP 2D calibrado)
 
-O FootScan é um sistema de captura, medição e documentação do pé usando a câmera do
-celular sobre uma **placa de calibração com marcadores ArUco**. O objetivo do MVP é
-apoiar profissionais (podólogos, fisioterapeutas, ortesistas) na **medição do pé e na
-fabricação de palmilhas personalizadas**, com registro histórico por paciente e
-relatório em PDF.
+> *Você, livre das dores!*
 
-> **Importante:** o FootScan **não realiza diagnóstico automático**. Ele produz
+O sistema **Palmilha Inteligente** (codinome técnico FootScan) captura, mede e
+documenta o pé usando a câmera do celular sobre uma **placa de calibração com
+marcadores ArUco**. O objetivo do MVP é apoiar profissionais (podólogos,
+fisioterapeutas, ortesistas) na **medição do pé e na fabricação de palmilhas
+personalizadas**, com registro histórico por paciente e relatório em PDF.
+
+A identidade visual (logotipo, paleta Azul Petróleo/Turquesa/Vermelho Destaque e
+tipografia Montserrat + Inter) segue o **Manual de Marca Palmilha Inteligente** e
+está aplicada no painel web, no relatório PDF e no app Android.
+
+> **Importante:** o sistema **não realiza diagnóstico automático**. Ele produz
 > medidas objetivas e documentação de apoio. A interpretação clínica é sempre do
 > profissional responsável.
 

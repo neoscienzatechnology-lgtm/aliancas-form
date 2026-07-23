@@ -203,7 +203,7 @@ fun ResultsScreen(
                         val request = DownloadManager.Request(Uri.parse(url))
                             .addRequestHeader("Authorization", "Bearer $token")
                             .setMimeType("application/pdf")
-                            .setTitle("Relatório FootScan")
+                            .setTitle("Relatório Palmilha Inteligente")
                             .setNotificationVisibility(
                                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED,
                             )

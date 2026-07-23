@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FootScan — Painel da Clínica</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header id="topbar" class="topbar hidden">
+    <div class="topbar-inner">
+      <a class="brand" href="#/patients">
+        <svg class="brand-icon" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+          <ellipse cx="11" cy="14.5" rx="5.2" ry="7.5" fill="currentColor"/>
+          <ellipse cx="12.5" cy="21.5" rx="3.4" ry="2.2" fill="currentColor"/>
+          <circle cx="7.2" cy="4.6" r="1.7" fill="currentColor"/>
+          <circle cx="11" cy="3.4" r="1.4" fill="currentColor"/>
+          <circle cx="14.2" cy="3.8" r="1.2" fill="currentColor"/>
+          <circle cx="16.8" cy="5" r="1" fill="currentColor"/>
+        </svg>
+        <span>FootScan</span>
+      </a>
+      <nav class="topbar-nav">
+        <a href="#/patients">Pacientes</a>
+      </nav>
+      <div class="topbar-user">
+        <span id="user-name" class="user-name"></span>
+        <button id="btn-logout" class="btn btn-outline btn-sm" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="view" class="view" aria-live="polite"></main>
+
+  <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+
+  <noscript>
+    <div class="noscript">Este painel requer JavaScript habilitado no navegador.</div>
+  </noscript>
+
+  <script src="app.js"></script>
+</body>
+</html>

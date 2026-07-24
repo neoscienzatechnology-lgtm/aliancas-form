@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Palmilha Inteligente — Painel da Clínica</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header id="topbar" class="topbar hidden">
+    <div class="topbar-inner">
+      <a class="brand" href="#/patients" aria-label="Palmilha Inteligente — início">
+        <img class="brand-img" src="brand/logo-mark.png" alt="Palmilha Inteligente">
+      </a>
+      <nav class="topbar-nav">
+        <a href="#/patients">Pacientes</a>
+      </nav>
+      <div class="topbar-user">
+        <span id="user-name" class="user-name"></span>
+        <button id="btn-logout" class="btn btn-outline btn-sm" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="view" class="view" aria-live="polite"></main>
+
+  <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+
+  <noscript>
+    <div class="noscript">Este painel requer JavaScript habilitado no navegador.</div>
+  </noscript>
+
+  <script src="app.js"></script>
+</body>
+</html>

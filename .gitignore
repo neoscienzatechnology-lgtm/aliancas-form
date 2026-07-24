@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+server/data/
+server/footscan.db
+*.db
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+.DS_Store

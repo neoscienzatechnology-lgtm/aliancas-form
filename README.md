@@ -121,7 +121,7 @@ envie fotos e baixe o PDF.
 ### Gerar a placa de captura (PDF imprimível)
 
 ```bash
-python3 server/tools/generate_markers.py            # gera placa_footscan.pdf
+python3 server/tools/generate_markers.py            # gera placa_palmilha_inteligente.pdf
 python3 server/tools/generate_markers.py --out minha_placa.pdf
 ```
 

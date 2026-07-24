@@ -41,7 +41,7 @@ condição para atingir a meta de erro linear ≤ 3 mm
 1. Gere o PDF da placa:
 
    ```bash
-   python3 server/tools/generate_markers.py --out placa_footscan.pdf
+   python3 server/tools/generate_markers.py --out placa_palmilha_inteligente.pdf
    ```
 
 2. **Imprima em escala 100% (tamanho real)** — desative qualquer opção
